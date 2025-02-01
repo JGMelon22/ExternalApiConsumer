@@ -13,7 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ExternalApiConsumer.Application\ExternalApiConsumer.Application.csproj" />
     <ProjectReference Include="..\ExternalApiConsumer.Infrastructure\ExternalApiConsumer.Infrastructure.csproj" />
-    <ProjectReference Include="..\ExternalApiConsumer.Domain\ExternalApiConsumer.Domain.csproj" />
+    <ProjectReference Include="..\ExternalApiConsumer.Core\ExternalApiConsumer.Core.csproj" />
   </ItemGroup>
 
 </Project>

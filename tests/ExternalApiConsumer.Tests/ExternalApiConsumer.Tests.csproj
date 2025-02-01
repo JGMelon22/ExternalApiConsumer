@@ -31,7 +31,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\ExternalApiConsumer.API\ExternalApiConsumer.API.csproj" />
     <ProjectReference Include="..\..\src\ExternalApiConsumer.Application\ExternalApiConsumer.Application.csproj" />
-    <ProjectReference Include="..\..\src\ExternalApiConsumer.Domain\ExternalApiConsumer.Domain.csproj" />
+    <ProjectReference Include="..\..\src\ExternalApiConsumer.Core\ExternalApiConsumer.Core.csproj" />
     <ProjectReference Include="..\..\src\ExternalApiConsumer.Infrastructure\ExternalApiConsumer.Infrastructure.csproj" />
   </ItemGroup>
 
