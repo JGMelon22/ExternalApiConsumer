@@ -6,59 +6,73 @@ namespace ExternalApiConsumer.Infrastructure.Services;
 
 public class ManagePersonService : IManagePersonService
 {
-    private readonly IManagePersonService _managePersonService;
+    private readonly IExternalPersonApi _externalPersonApi;
 
-    public ManagePersonService(IManagePersonService managePersonService)
+    public ManagePersonService(IExternalPersonApi externalPersonApi)
     {
-        _managePersonService = managePersonService;
+        _externalPersonApi = externalPersonApi;
     }
 
-    public async Task<bool> CreatePersonAsync(Person person)
+    public async Task<ServiceResponse<bool>> CreatePersonAsync(Person person)
     {
-        ServiceResponse<Person> serviceResponse = new();
+        var serviceResponse = new ServiceResponse<bool>();
 
         try
         {
-            bool isSuccess = await _managePersonService.CreatePersonAsync(person);
-            return isSuccess;
+            await _externalPersonApi.CreatePersonAsync(person);
+            serviceResponse.Data = true;
+            serviceResponse.Success = true;
+            serviceResponse.Message = "Person created successfully.";
         }
         catch (Exception ex)
         {
             serviceResponse.Success = false;
             serviceResponse.Message = ex.Message;
-
-            return false;
         }
+
+        return serviceResponse;
     }
 
-    public async Task<bool> DeletePeopleAsync()
+    public async Task<ServiceResponse<bool>> DeletePeopleAsync()
     {
-        ServiceResponse<Person> serviceResponse = new();
+        var serviceResponse = new ServiceResponse<bool>();
 
         try
         {
-            bool isSuccess = await _managePersonService.DeletePeopleAsync();
-            return isSuccess;
+            await _externalPersonApi.DeletePeopleAsync();
+            serviceResponse.Data = true;
+            serviceResponse.Success = true;
+            serviceResponse.Message = "People deleted successfully.";
         }
         catch (Exception ex)
         {
             serviceResponse.Success = false;
             serviceResponse.Message = ex.Message;
-
-            return false;
         }
+
+        return serviceResponse;
     }
 
     public async Task<ServiceResponse<IEnumerable<Person>>> GetPeopleAsync()
     {
-        ServiceResponse<IEnumerable<Person>> serviceResponse = new();
+        var serviceResponse = new ServiceResponse<IEnumerable<Person>>();
 
         try
         {
-            ServiceResponse<IEnumerable<Person>> response = await _managePersonService.GetPeopleAsync();
-            serviceResponse.Data = response.Data;
-            serviceResponse.Success = response.Success;
-            serviceResponse.Message = response.Message;
+            var externalServiceResponse = await _externalPersonApi.GetPeopleAsync();
+
+            if (externalServiceResponse.Success)
+            {
+                serviceResponse.Data = externalServiceResponse.Data;
+                serviceResponse.Success = true;
+            }
+
+            else
+            {
+                serviceResponse.Data = externalServiceResponse.Data;
+                serviceResponse.Message = externalServiceResponse.Message;
+            }
+
         }
         catch (Exception ex)
         {
@@ -75,10 +89,20 @@ public class ManagePersonService : IManagePersonService
 
         try
         {
-            ServiceResponse<Person> response = await _managePersonService.GetPersonAsync(id);
-            serviceResponse.Data = response.Data;
-            serviceResponse.Success = response.Success;
-            serviceResponse.Message = response.Message;
+            var externalServiceResponse = await _externalPersonApi.GetPersonAsync(id);
+
+            if (externalServiceResponse.Success)
+            {
+                serviceResponse.Data = externalServiceResponse.Data;
+                serviceResponse.Success = true;
+            }
+
+            else
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = externalServiceResponse.Message;
+            }
+
         }
         catch (Exception ex)
         {
@@ -89,21 +113,23 @@ public class ManagePersonService : IManagePersonService
         return serviceResponse;
     }
 
-    public async Task<bool> UpdatePersonAsync(int id, Person person)
+    public async Task<ServiceResponse<bool>> UpdatePersonAsync(int id, Person person)
     {
-        ServiceResponse<Person> serviceResponse = new();
+        var serviceResponse = new ServiceResponse<bool>();
 
         try
         {
-            bool isSuccess = await _managePersonService.UpdatePersonAsync(id, person);
-            return isSuccess;
+            await _externalPersonApi.UpdatePersonAsync(id, person);
+            serviceResponse.Data = true;
+            serviceResponse.Success = true;
+            serviceResponse.Message = "Person updated successfully.";
         }
         catch (Exception ex)
         {
             serviceResponse.Success = false;
             serviceResponse.Message = ex.Message;
-
-            return false;
         }
+
+        return serviceResponse;
     }
 }
