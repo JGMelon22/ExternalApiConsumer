@@ -1,4 +1,5 @@
 using System.Text.Json;
+using ExternalApiConsumer.Application.People.Commands.Handlers;
 using ExternalApiConsumer.Infrastructure.Interfaces;
 using ExternalApiConsumer.Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -13,12 +14,15 @@ builder.Services.Configure<JsonOptions>(options =>
     options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
 });
 
+builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssembly(typeof(CreatePersonCommandHandler).Assembly));
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-string apiBaseUrl = builder.Configuration["ServiceUri:ExternalPersonApi"]!;
+var apiBaseUrl = builder.Configuration["ServiceUri:ExternalPersonApi"]!;
 
 builder.Services.AddRefitClient<IExternalPersonApi>().ConfigureHttpClient(c => c.BaseAddress = new Uri(apiBaseUrl));
 

@@ -1,6 +1,7 @@
-using ExternalApiConsumer.Core.Domains.People.Entities;
-using ExternalApiConsumer.Core.Shared;
-using ExternalApiConsumer.Infrastructure.Interfaces;
+using ExternalApiConsumer.Application.People.Commands;
+using ExternalApiConsumer.Application.People.Queries;
+using ExternalApiConsumer.Core.Domains.Peole.Dtos.Requests;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExternalApiConsumer.API.Controllers;
@@ -9,19 +10,19 @@ namespace ExternalApiConsumer.API.Controllers;
 [Route("api/[controller]")]
 public class PeopleController : ControllerBase
 {
-    private readonly IManagePersonService _managePersonService;
+    private readonly IMediator _mediator;
 
-    public PeopleController(IManagePersonService managePersonService)
+    public PeopleController(IMediator mediator)
     {
-        _managePersonService = managePersonService;
+        _mediator = mediator;
     }
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> GetAllOrdersAsync()
+    public async Task<IActionResult> GetPeopleAsync()
     {
-        ServiceResponse<IEnumerable<Person>> people = await _managePersonService.GetPeopleAsync();
+        var people = await _mediator.Send(new GetPeopleQuery());
         return people.Data != null && people.Data.Any()
             ? Ok(people)
             : NoContent();
@@ -32,31 +33,30 @@ public class PeopleController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetPersonAsync([FromRoute] int id)
     {
-        ServiceResponse<Person> person = await _managePersonService.GetPersonAsync(id);
+        var person = await _mediator.Send(new GetPersonByIdQuery(id));
         return person.Data != null
             ? Ok(person)
             : NotFound(person);
     }
 
-    [HttpPost()]
+    [HttpPost]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreatePersonAsync([FromBody] Person newPerson)
+    public async Task<IActionResult> CreatePersonAsync([FromBody] PersonRequest newPerson)
     {
-        ServiceResponse<bool> person = await _managePersonService.CreatePersonAsync(newPerson);
-        return person.Success != false
+        var person = await _mediator.Send(new CreatePersonCommand(newPerson));
+        return person.Success
             ? NoContent()
             : BadRequest(person);
     }
-
 
     [HttpDelete]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DeletePeopleAsync()
     {
-        ServiceResponse<bool> person = await _managePersonService.DeletePeopleAsync();
-        return person.Success != false
+        var person = await _mediator.Send(new DeletePersonCommand());
+        return person.Success
             ? NoContent()
             : BadRequest(person);
     }
