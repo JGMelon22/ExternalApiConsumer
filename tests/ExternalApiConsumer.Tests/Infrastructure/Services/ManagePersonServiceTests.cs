@@ -5,7 +5,7 @@ using ExternalApiConsumer.Infrastructure.Services;
 using Moq;
 using Shouldly;
 
-namespace ExternalApiConsumer.Tests.Infrastructure;
+namespace ExternalApiConsumer.Tests.Infrastructure.Services;
 
 public class ManagePersonServiceTests
 {
@@ -33,7 +33,7 @@ public class ManagePersonServiceTests
         ManagePersonService managePersonService = new(externalPersonApi.Object);
 
         // Act
-        ServiceResponse<bool> result = await managePersonService.CreatePersonAsync(person);
+        var result = await managePersonService.CreatePersonAsync(person);
 
         // Assert
         result.Success.ShouldBeTrue();
@@ -58,7 +58,7 @@ public class ManagePersonServiceTests
         ManagePersonService managePersonService = new(externalPersonApi.Object);
 
         // Act
-        ServiceResponse<bool> result = await managePersonService.DeletePeopleAsync();
+        var result = await managePersonService.DeletePeopleAsync();
 
         // Assert
         result.Success.ShouldBeTrue();
@@ -86,7 +86,7 @@ public class ManagePersonServiceTests
         ManagePersonService managePersonService = new(externalPersonApi.Object);
 
         // Act
-        ServiceResponse<IEnumerable<Person>> result = await managePersonService.GetPeopleAsync();
+        var result = await managePersonService.GetPeopleAsync();
 
         // Assert
         result.Data!.ShouldNotBeNull();
@@ -111,7 +111,7 @@ public class ManagePersonServiceTests
         ManagePersonService managePersonService = new(externalPersonApi.Object);
 
         // Act
-        ServiceResponse<Person> result = await managePersonService.GetPersonAsync(1);
+        var result = await managePersonService.GetPersonAsync(1);
 
         // Assert
         result.Data.ShouldNotBeNull();

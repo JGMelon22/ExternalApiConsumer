@@ -1,6 +1,5 @@
 using ExternalApiConsumer.Application.People.Queries;
 using ExternalApiConsumer.Application.People.Queries.Handlers;
-using ExternalApiConsumer.Core.Domains.Peole.Dtos.Responses;
 using ExternalApiConsumer.Core.Domains.People.Entities;
 using ExternalApiConsumer.Core.Shared;
 using ExternalApiConsumer.Infrastructure.Interfaces;
@@ -34,7 +33,7 @@ public class GetPersonByIdQueryHandlerTests
         GetPersonByIdQueryHandler handler = new(managePersonService.Object);
 
         // Act
-        ServiceResponse<PersonResponse> result = await handler.Handle(query, CancellationToken.None);
+        var result = await handler.Handle(query, CancellationToken.None);
 
         // Assert
         result.Data.ShouldNotBeNull();

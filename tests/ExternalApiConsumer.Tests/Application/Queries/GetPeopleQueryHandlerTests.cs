@@ -1,6 +1,5 @@
 using ExternalApiConsumer.Application.People.Queries;
 using ExternalApiConsumer.Application.People.Queries.Handlers;
-using ExternalApiConsumer.Core.Domains.Peole.Dtos.Responses;
 using ExternalApiConsumer.Core.Domains.People.Entities;
 using ExternalApiConsumer.Core.Shared;
 using ExternalApiConsumer.Infrastructure.Interfaces;
@@ -25,7 +24,8 @@ public class GetPeopleQueryHandlerTests
         ];
 
         GetPeopleQuery query = new();
-        ServiceResponse<IEnumerable<Person>> serviceResponse = new() { Data = people, Success = true, Message = string.Empty };
+        ServiceResponse<IEnumerable<Person>> serviceResponse = new()
+            { Data = people, Success = true, Message = string.Empty };
 
         managePersonService
             .Setup(x => x.GetPeopleAsync())
@@ -34,7 +34,7 @@ public class GetPeopleQueryHandlerTests
         GetPeopleQueryHandler handler = new(managePersonService.Object);
 
         // Act
-        ServiceResponse<IEnumerable<PersonResponse>> result = await handler.Handle(query, CancellationToken.None);
+        var result = await handler.Handle(query, CancellationToken.None);
 
         // Assert
         result.Data!.ShouldNotBeNull();

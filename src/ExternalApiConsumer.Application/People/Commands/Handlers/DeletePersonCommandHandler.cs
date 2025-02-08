@@ -15,7 +15,7 @@ public class DeletePersonCommandHandler : IRequestHandler<DeletePersonCommand, S
 
     public async Task<ServiceResponse<bool>> Handle(DeletePersonCommand request, CancellationToken cancellationToken)
     {
-        ServiceResponse<bool> result = await _managePersonService.DeletePeopleAsync();
+        var result = await _managePersonService.DeletePeopleAsync();
 
         return new ServiceResponse<bool>
         {

@@ -15,7 +15,8 @@ public class GetPersonByIdQueryHandler : IRequestHandler<GetPersonByIdQuery, Ser
         _managePersonService = managePersonService;
     }
 
-    public async Task<ServiceResponse<PersonResponse>> Handle(GetPersonByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ServiceResponse<PersonResponse>> Handle(GetPersonByIdQuery request,
+        CancellationToken cancellationToken)
     {
         var person = await _managePersonService.GetPersonAsync(request.Id);
 
@@ -25,6 +26,5 @@ public class GetPersonByIdQueryHandler : IRequestHandler<GetPersonByIdQuery, Ser
             Message = person.Message,
             Data = person.Data?.ToResponse()
         };
-
     }
 }

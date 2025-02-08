@@ -1,5 +1,4 @@
 using ExternalApiConsumer.Core.Domains.Peole.Mappings;
-using ExternalApiConsumer.Core.Domains.People.Entities;
 using ExternalApiConsumer.Core.Shared;
 using ExternalApiConsumer.Infrastructure.Interfaces;
 using MediatR;
@@ -17,8 +16,8 @@ public class CreatePersonCommandHandler : IRequestHandler<CreatePersonCommand, S
 
     public async Task<ServiceResponse<bool>> Handle(CreatePersonCommand request, CancellationToken cancellationToken)
     {
-        Person person = request.PersonRequest.ToDomain();
-        ServiceResponse<bool> result = await _managePersonService.CreatePersonAsync(person);
+        var person = request.PersonRequest.ToDomain();
+        var result = await _managePersonService.CreatePersonAsync(person);
 
         return new ServiceResponse<bool>
         {

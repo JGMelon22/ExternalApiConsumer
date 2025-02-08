@@ -62,7 +62,7 @@ public class ManagePersonService : IManagePersonService
 
         try
         {
-            IEnumerable<Person> externalServiceResponse = await _externalPersonApi.GetPeopleAsync();
+            var externalServiceResponse = await _externalPersonApi.GetPeopleAsync();
 
             if (externalServiceResponse == null || !externalServiceResponse.Any())
             {
@@ -89,7 +89,7 @@ public class ManagePersonService : IManagePersonService
 
         try
         {
-            Person externalServiceResponse = await _externalPersonApi.GetPersonAsync(id);
+            var externalServiceResponse = await _externalPersonApi.GetPersonAsync(id);
 
             if (externalServiceResponse == null)
             {
@@ -100,7 +100,6 @@ public class ManagePersonService : IManagePersonService
 
             serviceResponse.Data = externalServiceResponse;
             serviceResponse.Success = true;
-
         }
         catch (Exception ex)
         {

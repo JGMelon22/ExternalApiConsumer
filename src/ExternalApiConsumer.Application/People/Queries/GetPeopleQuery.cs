@@ -4,4 +4,4 @@ using MediatR;
 
 namespace ExternalApiConsumer.Application.People.Queries;
 
-public sealed record GetPeopleQuery() : IRequest<ServiceResponse<IEnumerable<PersonResponse>>>;
+public sealed record GetPeopleQuery : IRequest<ServiceResponse<IEnumerable<PersonResponse>>>;

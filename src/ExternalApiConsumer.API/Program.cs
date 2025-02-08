@@ -1,7 +1,5 @@
-using System.Reflection;
 using System.Text.Json;
 using ExternalApiConsumer.Application.People.Commands.Handlers;
-using ExternalApiConsumer.Application.People.Queries.Handlers;
 using ExternalApiConsumer.Infrastructure.Interfaces;
 using ExternalApiConsumer.Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +22,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-string apiBaseUrl = builder.Configuration["ServiceUri:ExternalPersonApi"]!;
+var apiBaseUrl = builder.Configuration["ServiceUri:ExternalPersonApi"]!;
 
 builder.Services.AddRefitClient<IExternalPersonApi>().ConfigureHttpClient(c => c.BaseAddress = new Uri(apiBaseUrl));
 

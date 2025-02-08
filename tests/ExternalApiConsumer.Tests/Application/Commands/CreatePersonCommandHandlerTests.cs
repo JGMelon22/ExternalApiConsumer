@@ -32,7 +32,7 @@ public class CreatePersonCommandHandlerTests
         CreatePersonCommandHandler handler = new(managePersonService.Object);
 
         // Act
-        ServiceResponse<bool> result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, CancellationToken.None);
 
         // Assert
         result.Data.ShouldBeTrue();

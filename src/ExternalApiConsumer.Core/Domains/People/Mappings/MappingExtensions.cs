@@ -7,16 +7,20 @@ namespace ExternalApiConsumer.Core.Domains.Peole.Mappings;
 public static class MappingExtensions
 {
     public static Person ToDomain(this PersonRequest request)
-        => new Person(request.FirstName, request.LastName, request.Address);
+    {
+        return new Person(request.FirstName, request.LastName, request.Address);
+    }
 
     public static PersonResponse ToResponse(this Person person)
-        => new PersonResponse
+    {
+        return new PersonResponse
         {
             Id = person.Id,
             FirstName = person.FirstName,
             LastName = person.LastName,
             Address = person.Address
         };
+    }
 
     public static IEnumerable<PersonResponse> ToResponse(this IEnumerable<Person> people)
     {
