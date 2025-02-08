@@ -1,9 +1,9 @@
 # ExternalApiConsumer
 
 <span>
-This is a simple, but yet overengineered, weekend project made to consume an external API using <a href="https://github.com/reactiveui/refit">Refit<a/>.NuGet package</br>l
-This ASP .NET Core Web API consumes another <a href="https://github.com/JGMelon22/DataFakerDemo"<a/>external Web API made with Java + Spring deployed at <a href="https://render.com/">Render<a/>, however, it's using the free tier spin down with inactivity.
-<span/>
+This is a simple, yet slightly overengineered, weekend project designed to consume an external API using the <a href="https://github.com/reactiveui/refit">Refit</a> NuGet package.</br>
+This ASP.NET Core Web API interacts with another <a href="https://github.com/JGMelon22/DataFakerDemo">external Web API</a>, built with Java + Spring and deployed on <a href="https://render.com/">Render</a>. Note that the external API is on Render's free tier, which spins down after periods of inactivity.
+</span>
 
 <h3>Tech Stack</h3>
 <div style="display: flex; gap: 10px;">
