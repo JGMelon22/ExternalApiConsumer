@@ -3,11 +3,14 @@ namespace ExternalApiConsumer.Core.Domains.People.Entities;
 public class Person
 {
     public int Id { get; set; }
+
     public string FirstName { get; set; } = string.Empty;
+
     public string LastName { get; set; } = string.Empty;
+
     public string Address { get; set; } = string.Empty;
 
-    protected Person() { }
+    public Person() { }
 
     public Person(string firstName, string lastName, string address)
     {

@@ -9,5 +9,4 @@ public interface IManagePersonService
     Task<ServiceResponse<bool>> DeletePeopleAsync();
     Task<ServiceResponse<IEnumerable<Person>>> GetPeopleAsync();
     Task<ServiceResponse<Person>> GetPersonAsync(int id);
-    Task<ServiceResponse<bool>> UpdatePersonAsync(int id, Person person);
 }

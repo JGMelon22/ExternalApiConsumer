@@ -15,14 +15,19 @@ public class ManagePersonService : IManagePersonService
 
     public async Task<ServiceResponse<bool>> CreatePersonAsync(Person person)
     {
-        var serviceResponse = new ServiceResponse<bool>();
+        ServiceResponse<bool> serviceResponse = new();
 
         try
         {
+            if (person == null)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Person cannot be null.";
+                return serviceResponse;
+            }
+
             await _externalPersonApi.CreatePersonAsync(person);
-            serviceResponse.Data = true;
             serviceResponse.Success = true;
-            serviceResponse.Message = "Person created successfully.";
         }
         catch (Exception ex)
         {
@@ -35,14 +40,12 @@ public class ManagePersonService : IManagePersonService
 
     public async Task<ServiceResponse<bool>> DeletePeopleAsync()
     {
-        var serviceResponse = new ServiceResponse<bool>();
+        ServiceResponse<bool> serviceResponse = new();
 
         try
         {
             await _externalPersonApi.DeletePeopleAsync();
-            serviceResponse.Data = true;
             serviceResponse.Success = true;
-            serviceResponse.Message = "People deleted successfully.";
         }
         catch (Exception ex)
         {
@@ -55,24 +58,21 @@ public class ManagePersonService : IManagePersonService
 
     public async Task<ServiceResponse<IEnumerable<Person>>> GetPeopleAsync()
     {
-        var serviceResponse = new ServiceResponse<IEnumerable<Person>>();
+        ServiceResponse<IEnumerable<Person>> serviceResponse = new();
 
         try
         {
-            var externalServiceResponse = await _externalPersonApi.GetPeopleAsync();
+            IEnumerable<Person> externalServiceResponse = await _externalPersonApi.GetPeopleAsync();
 
-            if (externalServiceResponse.Success)
+            if (externalServiceResponse == null || !externalServiceResponse.Any())
             {
-                serviceResponse.Data = externalServiceResponse.Data;
-                serviceResponse.Success = true;
+                serviceResponse.Success = false;
+                serviceResponse.Message = "No people found.";
+                serviceResponse.Data = [];
             }
 
-            else
-            {
-                serviceResponse.Data = externalServiceResponse.Data;
-                serviceResponse.Message = externalServiceResponse.Message;
-            }
-
+            serviceResponse.Data = externalServiceResponse;
+            serviceResponse.Success = true;
         }
         catch (Exception ex)
         {
@@ -89,40 +89,18 @@ public class ManagePersonService : IManagePersonService
 
         try
         {
-            var externalServiceResponse = await _externalPersonApi.GetPersonAsync(id);
+            Person externalServiceResponse = await _externalPersonApi.GetPersonAsync(id);
 
-            if (externalServiceResponse.Success)
-            {
-                serviceResponse.Data = externalServiceResponse.Data;
-                serviceResponse.Success = true;
-            }
-
-            else
+            if (externalServiceResponse == null)
             {
                 serviceResponse.Success = false;
-                serviceResponse.Message = externalServiceResponse.Message;
+                serviceResponse.Message = $"Person with Id {id} not found.";
+                return serviceResponse;
             }
 
-        }
-        catch (Exception ex)
-        {
-            serviceResponse.Success = false;
-            serviceResponse.Message = ex.Message;
-        }
-
-        return serviceResponse;
-    }
-
-    public async Task<ServiceResponse<bool>> UpdatePersonAsync(int id, Person person)
-    {
-        var serviceResponse = new ServiceResponse<bool>();
-
-        try
-        {
-            await _externalPersonApi.UpdatePersonAsync(id, person);
-            serviceResponse.Data = true;
+            serviceResponse.Data = externalServiceResponse;
             serviceResponse.Success = true;
-            serviceResponse.Message = "Person updated successfully.";
+
         }
         catch (Exception ex)
         {
