@@ -9,7 +9,7 @@ public static class MappingExtensions
     public static Person ToDomain(this PersonRequest request)
         => new Person(request.FirstName, request.LastName, request.Address);
 
-    public static PersonResponse ToReponse(this Person person)
+    public static PersonResponse ToResponse(this Person person)
         => new PersonResponse
         {
             Id = person.Id,

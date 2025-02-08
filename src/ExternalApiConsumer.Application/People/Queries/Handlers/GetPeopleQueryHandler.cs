@@ -1,4 +1,6 @@
 using ExternalApiConsumer.Core.Domains.Peole.Dtos.Responses;
+using ExternalApiConsumer.Core.Domains.Peole.Mappings;
+using ExternalApiConsumer.Core.Domains.People.Entities;
 using ExternalApiConsumer.Core.Shared;
 using ExternalApiConsumer.Infrastructure.Interfaces;
 using MediatR;
@@ -16,19 +18,13 @@ public class GetPeopleQueryHandler : IRequestHandler<GetPeopleQuery, ServiceResp
 
     public async Task<ServiceResponse<IEnumerable<PersonResponse>>> Handle(GetPeopleQuery request, CancellationToken cancellationToken)
     {
-        ServiceResponse<IEnumerable<PersonResponse>> serviceResponse = new();
+        ServiceResponse<IEnumerable<Person>> people = await _managePersonService.GetPeopleAsync();
 
-
-        try
+        return new ServiceResponse<IEnumerable<PersonResponse>>
         {
-
-        }
-        catch (Exception ex)
-        {
-
-        }
-
-        var people = await _managePersonService.GetPeopleAsync();
-
+            Success = people.Success,
+            Message = people.Message,
+            Data = people.Data?.ToResponse()
+        };
     }
 }
