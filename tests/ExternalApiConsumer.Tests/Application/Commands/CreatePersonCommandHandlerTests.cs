@@ -18,7 +18,12 @@ public class CreatePersonCommandHandlerTests
         Mock<IManagePersonService> managePersonService = new();
         PersonRequest newPerson = new("Joao Gabriel", "Melao", "Somewhere Abc 123");
         CreatePersonCommand command = new(newPerson);
-        ServiceResponse<bool> serviceResponse = new() { Data = true, Success = true, Message = string.Empty };
+        ServiceResponse<bool> serviceResponse = new()
+        {
+            Data = true,
+            Success = true,
+            Message = string.Empty
+        };
 
         managePersonService
             .Setup(x => x.CreatePersonAsync(It.IsAny<Person>()))

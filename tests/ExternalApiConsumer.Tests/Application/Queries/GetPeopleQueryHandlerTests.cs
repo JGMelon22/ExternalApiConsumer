@@ -17,30 +17,13 @@ public class GetPeopleQueryHandlerTests
     {
         // Arrange
         Mock<IManagePersonService> managePersonService = new();
-        IEnumerable<Person> people = new List<Person>
-        {
-            new Person
-            {
-                Id = 1,
-                FirstName = "Joao Gabriel",
-                LastName = "Melao",
-                Address = "Somewhere Abc 123"
-            },
-            new Person
-            {
-                Id = 2,
-                FirstName = "Jane",
-                LastName = "Doe",
-                Address = "Another Place 456"
-            },
-            new Person
-            {
-                Id = 3,
-                FirstName = "John",
-                LastName = "Smith",
-                Address = "Some Street 789"
-            }
-        };
+        IEnumerable<Person> people =
+        [
+            new(1, "Joao Gabriel", "Melao", "Somewhere Abc 123"),
+            new(2, "Jane", "Doe", "Another Place 456"),
+            new(3, "John", "Smith", "Some Street 789")
+        ];
+
         GetPeopleQuery query = new();
         ServiceResponse<IEnumerable<Person>> serviceResponse = new() { Data = people, Success = true, Message = string.Empty };
 
