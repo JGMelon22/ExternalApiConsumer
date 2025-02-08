@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text.Json;
 using ExternalApiConsumer.Infrastructure.Interfaces;
 using ExternalApiConsumer.Infrastructure.Services;
@@ -12,6 +13,8 @@ builder.Services.Configure<JsonOptions>(options =>
 {
     options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
 });
+
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

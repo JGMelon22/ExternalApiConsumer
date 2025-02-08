@@ -2,7 +2,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ExternalApiConsumer.Core\ExternalApiConsumer.Core.csproj" />
-    <ProjectReference Include="..\ExternalApiConsumer.Application\ExternalApiConsumer.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
