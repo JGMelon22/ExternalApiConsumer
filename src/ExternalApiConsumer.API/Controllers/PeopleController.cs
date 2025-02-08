@@ -2,7 +2,6 @@ using ExternalApiConsumer.Application.People.Commands;
 using ExternalApiConsumer.Application.People.Queries;
 using ExternalApiConsumer.Core.Domains.Peole.Dtos.Requests;
 using ExternalApiConsumer.Core.Domains.Peole.Dtos.Responses;
-using ExternalApiConsumer.Core.Domains.People.Entities;
 using ExternalApiConsumer.Core.Shared;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -52,7 +51,6 @@ public class PeopleController : ControllerBase
             ? NoContent()
             : BadRequest(person);
     }
-
 
     [HttpDelete]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
