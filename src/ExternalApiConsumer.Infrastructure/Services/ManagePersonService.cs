@@ -1,6 +1,7 @@
 using ExternalApiConsumer.Core.Domains.People.Entities;
 using ExternalApiConsumer.Core.Shared;
 using ExternalApiConsumer.Infrastructure.Interfaces;
+using Refit;
 
 namespace ExternalApiConsumer.Infrastructure.Services;
 
@@ -62,7 +63,7 @@ public class ManagePersonService : IManagePersonService
 
         try
         {
-            var externalServiceResponse = await _externalPersonApi.GetPeopleAsync();
+            ApiResponse<IEnumerable<Person>> externalServiceResponse = await _externalPersonApi.GetPeopleAsync();
 
             if (externalServiceResponse.Content == null || !externalServiceResponse.Content.Any())
             {
@@ -91,7 +92,7 @@ public class ManagePersonService : IManagePersonService
 
         try
         {
-            var externalServiceResponse = await _externalPersonApi.GetPersonAsync(id);
+            ApiResponse<Person> externalServiceResponse = await _externalPersonApi.GetPersonAsync(id);
 
             if (externalServiceResponse.Content == null)
             {

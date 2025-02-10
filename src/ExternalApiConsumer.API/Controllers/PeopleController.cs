@@ -1,6 +1,8 @@
 using ExternalApiConsumer.Application.People.Commands;
 using ExternalApiConsumer.Application.People.Queries;
 using ExternalApiConsumer.Core.Domains.Peole.Dtos.Requests;
+using ExternalApiConsumer.Core.Domains.Peole.Dtos.Responses;
+using ExternalApiConsumer.Core.Shared;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +24,7 @@ public class PeopleController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> GetPeopleAsync()
     {
-        var people = await _mediator.Send(new GetPeopleQuery());
+        ServiceResponse<IEnumerable<PersonResponse>> people = await _mediator.Send(new GetPeopleQuery());
         return people.Data != null && people.Data.Any()
             ? Ok(people)
             : NoContent();
@@ -33,7 +35,7 @@ public class PeopleController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetPersonAsync([FromRoute] int id)
     {
-        var person = await _mediator.Send(new GetPersonByIdQuery(id));
+        ServiceResponse<PersonResponse> person = await _mediator.Send(new GetPersonByIdQuery(id));
         return person.Data != null
             ? Ok(person)
             : NotFound(person);
@@ -44,7 +46,7 @@ public class PeopleController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreatePersonAsync([FromBody] PersonRequest newPerson)
     {
-        var person = await _mediator.Send(new CreatePersonCommand(newPerson));
+        ServiceResponse<bool> person = await _mediator.Send(new CreatePersonCommand(newPerson));
         return person.Success
             ? NoContent()
             : BadRequest(person);
@@ -55,7 +57,7 @@ public class PeopleController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DeletePeopleAsync()
     {
-        var person = await _mediator.Send(new DeletePersonCommand());
+        ServiceResponse<bool> person = await _mediator.Send(new DeletePersonCommand());
         return person.Success
             ? NoContent()
             : BadRequest(person);
