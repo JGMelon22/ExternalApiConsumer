@@ -64,14 +64,16 @@ public class ManagePersonService : IManagePersonService
         {
             var externalServiceResponse = await _externalPersonApi.GetPeopleAsync();
 
-            if (externalServiceResponse == null || !externalServiceResponse.Any())
+            if (externalServiceResponse.Content == null || !externalServiceResponse.Content.Any())
             {
                 serviceResponse.Success = false;
                 serviceResponse.Message = "No people found.";
                 serviceResponse.Data = [];
+
+                return serviceResponse;
             }
 
-            serviceResponse.Data = externalServiceResponse;
+            serviceResponse.Data = externalServiceResponse.Content;
             serviceResponse.Success = true;
         }
         catch (Exception ex)
@@ -91,14 +93,15 @@ public class ManagePersonService : IManagePersonService
         {
             var externalServiceResponse = await _externalPersonApi.GetPersonAsync(id);
 
-            if (externalServiceResponse == null)
+            if (externalServiceResponse.Content == null)
             {
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Person with Id {id} not found.";
+                
                 return serviceResponse;
             }
 
-            serviceResponse.Data = externalServiceResponse;
+            serviceResponse.Data = externalServiceResponse.Content;
             serviceResponse.Success = true;
         }
         catch (Exception ex)

@@ -3,7 +3,9 @@ using ExternalApiConsumer.Core.Shared;
 using ExternalApiConsumer.Infrastructure.Interfaces;
 using ExternalApiConsumer.Infrastructure.Services;
 using Moq;
+using Refit;
 using Shouldly;
+using System.Net;
 
 namespace ExternalApiConsumer.Tests.Infrastructure.Services;
 
@@ -33,7 +35,7 @@ public class ManagePersonServiceTests
         ManagePersonService managePersonService = new(externalPersonApi.Object);
 
         // Act
-        var result = await managePersonService.CreatePersonAsync(person);
+        ServiceResponse<bool> result = await managePersonService.CreatePersonAsync(person);
 
         // Assert
         result.Success.ShouldBeTrue();
@@ -58,7 +60,7 @@ public class ManagePersonServiceTests
         ManagePersonService managePersonService = new(externalPersonApi.Object);
 
         // Act
-        var result = await managePersonService.DeletePeopleAsync();
+        ServiceResponse<bool> result = await managePersonService.DeletePeopleAsync();
 
         // Assert
         result.Success.ShouldBeTrue();
@@ -78,15 +80,19 @@ public class ManagePersonServiceTests
             new(3, "John", "Smith", "Some Street 789")
         ];
 
+        ApiResponse<IEnumerable<Person>> apiResponse = new(
+            new HttpResponseMessage(HttpStatusCode.OK),
+            people,
+            new RefitSettings());
 
         externalPersonApi
             .Setup(x => x.GetPeopleAsync())
-            .ReturnsAsync(people);
+            .ReturnsAsync(apiResponse);
 
         ManagePersonService managePersonService = new(externalPersonApi.Object);
 
         // Act
-        var result = await managePersonService.GetPeopleAsync();
+        ServiceResponse<IEnumerable<Person>> result = await managePersonService.GetPeopleAsync();
 
         // Assert
         result.Data!.ShouldNotBeNull();
@@ -103,15 +109,19 @@ public class ManagePersonServiceTests
         // Arrange
         Mock<IExternalPersonApi> externalPersonApi = new();
         Person person = new(1, "Jill", "Valentine", "Raccoon City");
+        ApiResponse<Person> apiResponse = new(
+            new HttpResponseMessage(HttpStatusCode.OK),
+            person,
+            new RefitSettings());
 
         externalPersonApi
             .Setup(x => x.GetPersonAsync(1))
-            .ReturnsAsync(person);
+            .ReturnsAsync(apiResponse);
 
         ManagePersonService managePersonService = new(externalPersonApi.Object);
 
         // Act
-        var result = await managePersonService.GetPersonAsync(1);
+        ServiceResponse<Person> result = await managePersonService.GetPersonAsync(1);
 
         // Assert
         result.Data.ShouldNotBeNull();
