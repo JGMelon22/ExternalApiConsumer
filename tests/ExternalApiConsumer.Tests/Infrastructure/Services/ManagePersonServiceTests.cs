@@ -44,6 +44,31 @@ public class ManagePersonServiceTests
     }
 
     [Fact]
+    public async Task Should_Return_SuccessTrue_When_SeedIsCorrectlyExecuted()
+    {
+        // Arrange
+        Mock<IExternalPersonApi> externalPersonApi = new();
+        ServiceResponse<bool> serviceResponse = new()
+        {
+            Data = true,
+            Success = true,
+            Message = string.Empty
+        };
+        externalPersonApi
+            .Setup(x => x.SeedDataAsync());
+
+        ManagePersonService managePersonService = new(externalPersonApi.Object);
+
+        // Act
+        var result = await managePersonService.SeedDataAsync();
+
+        // Assert
+        result.Success.ShouldBeTrue();
+        result.Message.ShouldBeEmpty();
+        externalPersonApi.Verify(api => api.SeedDataAsync(), Times.Once);
+    }
+
+    [Fact]
     public async Task DeletePeopleAsync_ShouldReturnSuccess_WhenDeletionSucceeds()
     {
         // Arrange

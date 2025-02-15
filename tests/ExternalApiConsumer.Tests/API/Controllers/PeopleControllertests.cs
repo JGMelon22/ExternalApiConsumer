@@ -105,6 +105,32 @@ public class PeopleControllerTests
     }
 
     [Fact]
+    public async Task Should_Return_StatusCode204_When_SeedDataExecutesFlawlessly()
+    {
+        // Arrange
+        Mock<IMediator> mediator = new();
+        PeopleController controller = new(mediator.Object);
+
+        ServiceResponse<bool> serviceResponse = new()
+        {
+            Data = true,
+            Success = true,
+            Message = string.Empty
+        };
+
+        mediator
+            .Setup(x => x.Send(It.IsAny<SeedDataCommand>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(serviceResponse);
+
+        // Act
+        var result = await controller.SeedDataAsync();
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.ShouldBeOfType<NoContentResult>();
+    }
+
+    [Fact]
     public async Task Should_Return_StatusCode204_When_PeopleAreSuccessfullyDeleted()
     {
         // Arrange
