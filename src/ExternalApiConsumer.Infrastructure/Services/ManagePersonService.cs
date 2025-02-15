@@ -1,3 +1,4 @@
+using System.Net;
 using ExternalApiConsumer.Core.Domains.People.Entities;
 using ExternalApiConsumer.Core.Shared;
 using ExternalApiConsumer.Infrastructure.Interfaces;
@@ -64,14 +65,14 @@ public class ManagePersonService : IManagePersonService
         {
             var externalServiceResponse = await _externalPersonApi.GetPeopleAsync();
 
-            if (externalServiceResponse == null || !externalServiceResponse.Any())
+            if (externalServiceResponse.Content == null || !externalServiceResponse.Content.Any())
             {
                 serviceResponse.Success = false;
                 serviceResponse.Message = "No people found.";
                 serviceResponse.Data = [];
             }
 
-            serviceResponse.Data = externalServiceResponse;
+            serviceResponse.Data = externalServiceResponse.Content;
             serviceResponse.Success = true;
         }
         catch (Exception ex)
@@ -91,14 +92,14 @@ public class ManagePersonService : IManagePersonService
         {
             var externalServiceResponse = await _externalPersonApi.GetPersonAsync(id);
 
-            if (externalServiceResponse == null)
+            if (externalServiceResponse.StatusCode == HttpStatusCode.NotFound)
             {
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Person with Id {id} not found.";
                 return serviceResponse;
             }
 
-            serviceResponse.Data = externalServiceResponse;
+            serviceResponse.Data = externalServiceResponse.Content;
             serviceResponse.Success = true;
         }
         catch (Exception ex)

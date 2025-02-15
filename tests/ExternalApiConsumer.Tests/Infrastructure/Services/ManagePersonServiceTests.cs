@@ -1,8 +1,10 @@
+using System.Net;
 using ExternalApiConsumer.Core.Domains.People.Entities;
 using ExternalApiConsumer.Core.Shared;
 using ExternalApiConsumer.Infrastructure.Interfaces;
 using ExternalApiConsumer.Infrastructure.Services;
 using Moq;
+using Refit;
 using Shouldly;
 
 namespace ExternalApiConsumer.Tests.Infrastructure.Services;
@@ -77,11 +79,15 @@ public class ManagePersonServiceTests
             new(2, "Jane", "Doe", "Another Place 456"),
             new(3, "John", "Smith", "Some Street 789")
         ];
-
+        ApiResponse<IEnumerable<Person>> apiResponse = new(
+            new HttpResponseMessage(HttpStatusCode.OK),
+            people,
+            new RefitSettings()
+        );
 
         externalPersonApi
             .Setup(x => x.GetPeopleAsync())
-            .ReturnsAsync(people);
+            .ReturnsAsync(apiResponse);
 
         ManagePersonService managePersonService = new(externalPersonApi.Object);
 
@@ -103,10 +109,15 @@ public class ManagePersonServiceTests
         // Arrange
         Mock<IExternalPersonApi> externalPersonApi = new();
         Person person = new(1, "Jill", "Valentine", "Raccoon City");
+        ApiResponse<Person> apiResponse = new(
+            new HttpResponseMessage(HttpStatusCode.OK),
+            person,
+            new RefitSettings()
+        );
 
         externalPersonApi
             .Setup(x => x.GetPersonAsync(1))
-            .ReturnsAsync(person);
+            .ReturnsAsync(apiResponse);
 
         ManagePersonService managePersonService = new(externalPersonApi.Object);
 
