@@ -14,6 +14,9 @@ public interface IExternalPersonApi
     [Post("/api/person")]
     Task CreatePersonAsync(Person person);
 
+    [Post("/api/person/seed-data")]
+    Task SeedDataAsync();
+
     [Delete("/api/person")]
     Task DeletePeopleAsync();
 }

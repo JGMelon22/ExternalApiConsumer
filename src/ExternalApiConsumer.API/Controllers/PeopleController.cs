@@ -50,6 +50,17 @@ public class PeopleController : ControllerBase
             : BadRequest(person);
     }
 
+    [HttpPost("seed-data")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> SeedDataAsync()
+    {
+        var seedData = await _mediator.Send(new SeedDataCommand());
+        return seedData.Success
+            ? NoContent()
+            : BadRequest(seedData);
+    }
+
     [HttpDelete]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

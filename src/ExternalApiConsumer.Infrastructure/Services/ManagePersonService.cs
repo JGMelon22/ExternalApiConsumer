@@ -110,4 +110,22 @@ public class ManagePersonService : IManagePersonService
 
         return serviceResponse;
     }
+
+    public async Task<ServiceResponse<bool>> SeedDataAsync()
+    {
+        ServiceResponse<bool> serviceResponse = new();
+
+        try
+        {
+            await _externalPersonApi.SeedDataAsync();
+            serviceResponse.Success = true;
+        }
+        catch (Exception ex)
+        {
+            serviceResponse.Success = false;
+            serviceResponse.Message = ex.Message;
+        }
+
+        return serviceResponse;
+    }
 }

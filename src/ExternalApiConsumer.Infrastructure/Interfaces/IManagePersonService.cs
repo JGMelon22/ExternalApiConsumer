@@ -6,6 +6,7 @@ namespace ExternalApiConsumer.Infrastructure.Interfaces;
 public interface IManagePersonService
 {
     Task<ServiceResponse<bool>> CreatePersonAsync(Person person);
+    Task<ServiceResponse<bool>> SeedDataAsync();
     Task<ServiceResponse<bool>> DeletePeopleAsync();
     Task<ServiceResponse<IEnumerable<Person>>> GetPeopleAsync();
     Task<ServiceResponse<Person>> GetPersonAsync(int id);
